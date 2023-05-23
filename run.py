@@ -19,6 +19,11 @@ def welcome_banner():
  / /   / __ \/ __  / _ \   / __  / ___/ _ \/ __ `/ //_/ _ \/ ___/ / 
 / /___/ /_/ / /_/ /  __/  / /_/ / /  /  __/ /_/ / ,< /  __/ /  /_/  
 \____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   \n\n""")
+    print("A 'Hit' means you have guessed the RIGHT number in the RIGHT place\n")
+    print("A 'Miss' means you have guessed the RIGHT number in the WRONG place\n")
+
+
+
 
 def generate_code(code_length):
     """
@@ -46,7 +51,7 @@ def get_player_guess():
         try:
             guess = 0
             while len(str(guess)) != 4:
-                guess = int(input("Please enter your 4 digit number: "))
+                guess = int(input("Enter a 4 digit number to crack the code: "))
                 if len(str(guess)) != 4:
                     print("Must be 4 digits long")
 
@@ -83,7 +88,6 @@ def check_answer(code, guess):
         print("Well done, you broke the code!")
         exact_match = len(code_list)
         near_miss = 0
-        game_over()
     else:
         for i in range(len(code_list) -1, -1, -1):
             # print(i)
@@ -95,8 +99,8 @@ def check_answer(code, guess):
         exact_match = len(match_list)
         remain_matches = set(remain_code_list) & set(remain_guess_list)
         near_miss = len(remain_matches)
-    this_attempt = Attempt(guess, exact_match, near_miss)
-    return this_attempt
+    
+    return exact_match, near_miss
 
 def build_attempt_list(alist, attempt):
     """
@@ -107,11 +111,20 @@ def build_attempt_list(alist, attempt):
     return alist
 
 def show_previous_attempts(attempt_list):
+    """
+    First clear screen and reprint welcome banner
+    Print list of attempts and results to screen
+    before next attempt.
+    """
     welcome_banner()
+
+    print("The secret code is")
+    print("X X X X\n")
+
     if len(attempt_list) != 0:
         for att in attempt_list:
             x = attempt_list.index(att) + 1
-            print(f"Attempt {x}: {att.attempt}      Hit: {att.hit} Miss: {att.miss}")
+            print(f"Attempt {x:02d}: {att.attempt}      Hit: {att.hit} Miss: {att.miss}")
             # print(att.show()) 
 
 def game_over():
@@ -123,12 +136,16 @@ def main():
     """
     code = generate_code(4)
     attempt_list = []
-    for x in range(4):
-        show_previous_attempts(attempt_list)
-        guess = get_player_guess()
-        current_attempt = check_answer(code, guess)
-        attempt_list = build_attempt_list(attempt_list, current_attempt)
+    exact_match = 0
+    while exact_match != len(str(code)):
+        if attempt_list != "done":
+            show_previous_attempts(attempt_list)
+            guess = get_player_guess()
+            exact_match, near_miss = check_answer(code, guess)
+            current_attempt = Attempt(guess, exact_match, near_miss)
+            attempt_list = build_attempt_list(attempt_list, current_attempt)
 
+    game_over()
 
 welcome_banner()
 
