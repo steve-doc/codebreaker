@@ -18,7 +18,7 @@ def welcome_banner():
   / ____/___  ____/ /__     / __ )________  ____ _/ /_____  _____/ /
  / /   / __ \/ __  / _ \   / __  / ___/ _ \/ __ `/ //_/ _ \/ ___/ / 
 / /___/ /_/ / /_/ /  __/  / /_/ / /  /  __/ /_/ / ,< /  __/ /  /_/  
-\____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   """)
+\____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   \n\n""")
 
 def generate_code(code_length):
     """
@@ -83,6 +83,7 @@ def check_answer(code, guess):
         print("Well done, you broke the code!")
         exact_match = len(code_list)
         near_miss = 0
+        game_over()
     else:
         for i in range(len(code_list) -1, -1, -1):
             # print(i)
@@ -94,19 +95,45 @@ def check_answer(code, guess):
         exact_match = len(match_list)
         remain_matches = set(remain_code_list) & set(remain_guess_list)
         near_miss = len(remain_matches)
+    this_attempt = Attempt(guess, exact_match, near_miss)
+    return this_attempt
 
-    return exact_match, near_miss
+def build_attempt_list(alist, attempt):
+    """
+    add each attempt to the attempt_list so it can be printed
+    out before the next attempt
+    """
+    alist.append(attempt)
+    return alist
+
+def show_previous_attempts(attempt_list):
+    welcome_banner()
+    if len(attempt_list) != 0:
+        for att in attempt_list:
+            x = attempt_list.index(att) + 1
+            print(f"Attempt {x}: {att.attempt}      Hit: {att.hit} Miss: {att.miss}")
+            # print(att.show()) 
+
+def game_over():
+    print("GAME OVER!!!")
+
+def main():
+    """
+    Main game function
+    """
+    code = generate_code(4)
+    attempt_list = []
+    for x in range(4):
+        show_previous_attempts(attempt_list)
+        guess = get_player_guess()
+        current_attempt = check_answer(code, guess)
+        attempt_list = build_attempt_list(attempt_list, current_attempt)
+
+
+welcome_banner()
+
+main()
 
 
 
-# welcome_banner()
-# code = generate_code(4)
-# guess = get_player_guess()
 
-code = 1234
-guess = 4321
-
-hit, miss = check_answer(code, guess)
-first_attempt = Attempt(guess, hit, miss)
-print(first_attempt.attempt)
-first_attempt.show()
