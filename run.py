@@ -1,3 +1,4 @@
+import gspread
 from random import randrange
 from os import system
 from google.oauth2.service_account import Credentials
@@ -11,9 +12,13 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('code_breaker')
+SHEET = GSPREAD_CLIENT.open('code_breaker').sheet1
+
 
 class Attempt:
+    """
+    A class to store code cracking attempts with results (hit, near miss)
+    """
     def __init__(self, attempt, hit, miss):
         self.attempt = attempt
         self.hit = hit
@@ -136,11 +141,26 @@ def show_previous_attempts(attempt_list):
     if len(attempt_list) != 0:
         for att in attempt_list:
             x = attempt_list.index(att) + 1
-            print(f"Attempt {x:02d}: {att.attempt}      Hit: {att.hit} Miss: {att.miss}")
+            print(f"Attempt {x:02d}: {att.attempt}      Hit: {att.hit} Near Miss: {att.miss}")
             # print(att.show()) 
 
 def game_over():
     print("GAME OVER!!!")
+
+def get_player_name():
+    user = input("Please enter a new or existing user name: ")
+    return user
+
+def check_existing_player(user):
+    players = SHEET.get_all_values()
+    for player in players:
+        if user == player[0]:
+            print(f"Welcome back {user}, are you ready to beat your previous score?")
+            return
+    
+    print(f"Welcome to CodeBreak {user}, would you like to see the rules?")
+    new_user = [user, "none", "none", "none"]
+    SHEET.append_row(new_user)
 
 def main():
     """
@@ -161,7 +181,12 @@ def main():
 
 welcome_banner()
 
-main()
+# main()
+
+player = get_player_name()
+check_existing_player(player)
+
+
 
 
 
