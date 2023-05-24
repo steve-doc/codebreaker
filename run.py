@@ -148,19 +148,44 @@ def game_over():
     print("GAME OVER!!!")
 
 def get_player_name():
-    user = input("Please enter a new or existing user name: ")
+    u = input("Please enter a new or existing user name: ")
     return user
 
 def check_existing_player(user):
     players = SHEET.get_all_values()
     for player in players:
-        if user == player[0]:
+        if user.lower() == player[0]:
             print(f"Welcome back {user}, are you ready to beat your previous score?")
             return
     
     print(f"Welcome to CodeBreak {user}, would you like to see the rules?")
     new_user = [user, "none", "none", "none"]
     SHEET.append_row(new_user)
+
+def ask_game_level():
+    print(" What level of game would you like to play?")
+    print("(B)eginner (3 Digit code)")
+    print("(N)ormal (4 Digit code)")
+    print("(D)ifficult (5 Digit code)")
+    check = True
+    while check == True:
+        l = input("b/n/d: ")
+        level = l.lower()
+        if level != "b" and level != "n" and level != "d":
+            print("Must answer 'b', 'n' or 'd' ")
+        else:
+            check = False
+    return level
+
+def set_game_level(level):
+    if level == "b":
+        code_length = 3
+    elif level == "d":
+        code_length = 5
+    else:
+        code_length = 4
+
+    return code_length
 
 def main():
     """
@@ -183,9 +208,12 @@ welcome_banner()
 
 # main()
 
-player = get_player_name()
-check_existing_player(player)
+# player = get_player_name()
+# check_existing_player(player)
 
+level = ask_game_level()
+code_length = set_game_level(level)
+print(code_length)
 
 
 
