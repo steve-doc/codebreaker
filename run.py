@@ -1,5 +1,17 @@
 from random import randrange
 from os import system
+from google.oauth2.service_account import Credentials
+
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
+
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('code_breaker')
 
 class Attempt:
     def __init__(self, attempt, hit, miss):
@@ -51,7 +63,7 @@ def get_player_guess():
         try:
             guess = 0
             while len(str(guess)) != 4:
-                guess = int(input("Enter a 4 digit number to crack the code: "))
+                guess = int(input("\nEnter a 4 digit number to crack the code: "))
                 if len(str(guess)) != 4:
                     print("Must be 4 digits long")
 
@@ -118,7 +130,7 @@ def show_previous_attempts(attempt_list):
     """
     welcome_banner()
 
-    print("The secret code is")
+    print("The secret code is\n")
     print("X X X X\n")
 
     if len(attempt_list) != 0:
