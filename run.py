@@ -39,13 +39,62 @@ def welcome_banner():
 
 
 def game_menu():
+    """
+    Displays game menu, take user choice and acts on choice
+    """
+    welcome_banner()
     print("""
     1 - Play new game
     2 - Instructions
     3 - High Scores
+    4 - Quit
     """)
 
+    choice = 0
+    while choice != 1 and choice != 2 and choice != 3 and choice != 4:
+        choice = input("Please choose: \n")
+        if choice == "1":
+            main()
+        elif choice == "2":
+            instructions()
+        elif choice == "3":
+            high_scores()
+        elif choice == "4":
+            print("Thanks for playing.  Share with your friends and come back soon!")
+            break
+        else:
+            print("You must choose '1', '2', '3' or '4' ")
 
+def instructions():
+
+
+
+    choice = ""
+    while choice != "c":
+        welcome_banner()
+        print("""
+    ____           __                  __  _                 
+   /  _/___  _____/ /________  _______/ /_(_)___  ____  _____
+   / // __ \/ ___/ __/ ___/ / / / ___/ __/ / __ \/ __ \/ ___/
+ _/ // / / (__  ) /_/ /  / /_/ / /__/ /_/ / /_/ / / / (__  ) 
+/___/_/ /_/____/\__/_/   \__,_/\___/\__/_/\____/_/ /_/____/  
+                                                             
+
+        """)
+        print("""
+        The aim of the game is to crack the numeric code in as few attempts
+        as possible. So a low score is actually a high score.
+
+        The code will be either 3, 4, or 5 digits long, depending on the difficulty 
+        of the game you choose (East, Normal or Difficult).
+
+        The codes will not have leading zeros, so nothing like 001 (easy) or 01234 (normal).  
+        Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are valid.
+
+        3 digit codes are between 100 and 999
+        """)
+        choice = input("Press 'C' to continue \n")
+    game_menu()
 
 def generate_code(code_length):
     """
@@ -180,12 +229,12 @@ def check_existing_player(user):
 
 def ask_game_level():
     print(" What level of game would you like to play?")
-    print("(B)eginner (3 Digit code)")
+    print("\n(B)eginner (3 Digit code)")
     print("(N)ormal (4 Digit code)")
     print("(D)ifficult (5 Digit code)")
     check = True
     while check == True:
-        l = input("b/n/d: \n")
+        l = input("B/N/D: \n")
         level = l.lower()
         if level != "b" and level != "n" and level != "d":
             print("Must answer 'b', 'n' or 'd' ")
@@ -207,7 +256,7 @@ def main():
     """
     Main game function
     """
-    
+    welcome_banner()
     player = get_player_name()
     check_existing_player(player)
 
@@ -229,7 +278,9 @@ def main():
 
 welcome_banner()
 
-main()
+# main()
+
+game_menu()
 
 
 
