@@ -36,9 +36,14 @@ def welcome_banner():
  / /   / __ \/ __  / _ \   / __  / ___/ _ \/ __ `/ //_/ _ \/ ___/ / 
 / /___/ /_/ / /_/ /  __/  / /_/ / /  /  __/ /_/ / ,< /  __/ /  /_/  
 \____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   \n\n""")
-    print("A 'Hit' means you have guessed the RIGHT number in the RIGHT place\n")
-    print("A 'Miss' means you have guessed the RIGHT number in the WRONG place\n")
 
+
+def game_menu():
+    print("""
+    1 - Play new game
+    2 - Instructions
+    3 - High Scores
+    """)
 
 
 
@@ -60,17 +65,17 @@ def generate_code(code_length):
 
     return code
 
-def get_player_guess():
+def get_player_guess(code_length):
     """
-    Ask for user guess and check it is intiger andcorrect length
+    Ask for user guess and check it is integer and correct length
     """
     while True:
         try:
             guess = 0
-            while len(str(guess)) != 4:
-                guess = int(input("\nEnter a 4 digit number to crack the code: "))
-                if len(str(guess)) != 4:
-                    print("Must be 4 digits long")
+            while len(str(guess)) != code_length:
+                guess = int(input(f"\nEnter a {code_length} digit number to crack the code: "))
+                if len(str(guess)) != code_length:
+                    print(f"Must be {code_length} digits long and not have leading zeros")
 
             break
         except ValueError:
@@ -127,7 +132,7 @@ def build_attempt_list(alist, attempt):
     alist.append(attempt)
     return alist
 
-def show_previous_attempts(attempt_list):
+def show_previous_attempts(attempt_list, code_length):
     """
     First clear screen and reprint welcome banner
     Print list of attempts and results to screen
@@ -136,7 +141,16 @@ def show_previous_attempts(attempt_list):
     welcome_banner()
 
     print("The secret code is\n")
-    print("X X X X\n")
+
+    if code_length == 3:
+        print("X X X\n")
+    elif code_length == 4:
+        print("X X X X\n")
+    else:
+        print("X X X X X\n")
+
+    print("A 'Hit' means you have guessed the RIGHT number in the RIGHT place\n")
+    print("A 'Near Miss' means you have guessed the RIGHT number in the WRONG place\n")
 
     if len(attempt_list) != 0:
         for att in attempt_list:
@@ -148,18 +162,20 @@ def game_over():
     print("GAME OVER!!!")
 
 def get_player_name():
-    u = input("Please enter a new or existing user name: ")
+    user = input("Please enter a new or existing user name: ")
     return user
 
 def check_existing_player(user):
     players = SHEET.get_all_values()
     for player in players:
         if user.lower() == player[0]:
-            print(f"Welcome back {user}, are you ready to beat your previous score?")
+            print(f"\nWelcome back {user}, are you ready to beat your previous score?\n")
+            print("You current high scores are\n")
+            print(f"Beginner - {player[1]}\nNormal - {player[2]}\nDifficult - {player[3]}\n")
             return
     
-    print(f"Welcome to CodeBreak {user}, would you like to see the rules?")
-    new_user = [user, "none", "none", "none"]
+    print(f"\nWelcome to CodeBreak {user}, would you like to see the rules?")
+    new_user = [user.lower(), "none", "none", "none"]
     SHEET.append_row(new_user)
 
 def ask_game_level():
@@ -191,13 +207,20 @@ def main():
     """
     Main game function
     """
-    code = generate_code(4)
+    
+    player = get_player_name()
+    check_existing_player(player)
+
+    level = ask_game_level()
+    code_length = set_game_level(level)
+    code = generate_code(code_length)
+    
     attempt_list = []
     exact_match = 0
     while exact_match != len(str(code)):
         if attempt_list != "done":
-            show_previous_attempts(attempt_list)
-            guess = get_player_guess()
+            show_previous_attempts(attempt_list, code_length)
+            guess = get_player_guess(code_length)
             exact_match, near_miss = check_answer(code, guess)
             current_attempt = Attempt(guess, exact_match, near_miss)
             attempt_list = build_attempt_list(attempt_list, current_attempt)
@@ -206,14 +229,10 @@ def main():
 
 welcome_banner()
 
-# main()
+main()
 
-# player = get_player_name()
-# check_existing_player(player)
 
-level = ask_game_level()
-code_length = set_game_level(level)
-print(code_length)
+
 
 
 
