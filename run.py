@@ -31,27 +31,30 @@ def welcome_banner():
     Prints welcome screen to console after clearing screen.
     """
     system('clear')
-    print("\n", "Welcome to\n", """  ______          __        ____                  __             __
+    print("\n", "Welcome to\n", """\033[34m  ______          __        ____                  __             __
   / ____/___  ____/ /__     / __ )________  ____ _/ /_____  _____/ /
  / /   / __ \/ __  / _ \   / __  / ___/ _ \/ __ `/ //_/ _ \/ ___/ / 
 / /___/ /_/ / /_/ /  __/  / /_/ / /  /  __/ /_/ / ,< /  __/ /  /_/  
-\____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   \n\n""")
+\____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   \033[0m \n\n""")
 
 
 def game_menu():
     """
     Displays game menu, take user choice and acts on choice
     """
-    welcome_banner()
-    print("""
-    1 - Play new game
-    2 - Instructions
-    3 - High Scores
-    4 - Quit
-    """)
+
+    
+
 
     choice = 0
     while choice != 1 and choice != 2 and choice != 3 and choice != 4:
+        welcome_banner()
+        print("""
+        1 - Play new game
+        2 - Instructions
+        3 - High Scores
+        4 - Quit
+        """)
         choice = input("Please choose: \n")
         if choice == "1":
             main()
@@ -62,17 +65,16 @@ def game_menu():
         elif choice == "4":
             print("Thanks for playing.  Share with your friends and come back soon!")
             break
-        else:
-            print("You must choose '1', '2', '3' or '4' ")
+        
 
 def instructions():
 
 
 
     choice = ""
-    while choice != "c":
+    while choice != " ":
         welcome_banner()
-        print("""
+        print("""\033[31m
     ____           __                  __  _                 
    /  _/___  _____/ /________  _______/ /_(_)___  ____  _____
    / // __ \/ ___/ __/ ___/ / / / ___/ __/ / __ \/ __ \/ ___/
@@ -80,7 +82,7 @@ def instructions():
 /___/_/ /_/____/\__/_/   \__,_/\___/\__/_/\____/_/ /_/____/  
                                                              
 
-        """)
+        \033[0m""")
         print("""
 The aim of the game is to crack the numeric code in as few attempts
 as possible. So a low score is actually a high score.
@@ -93,7 +95,15 @@ Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are 
 
 3 digit codes are between 100 and 999
         """)
-        choice = input("Press 'C' to continue \n")
+        choice = input("Press Space Bar then return to continue \n")
+    game_menu()
+
+def high_scores():
+    choice = ""
+    while choice != " ":
+        welcome_banner()
+        print("High Scores\n")
+        choice = input("Press Space Bar then return to continue \n")
     game_menu()
 
 def generate_code(code_length):
@@ -156,7 +166,6 @@ def check_answer(code, guess):
     match_list = []
 
     if guess == code:
-        print("Well done, you broke the code!")
         exact_match = len(code_list)
         near_miss = 0
     else:
@@ -207,8 +216,14 @@ def show_previous_attempts(attempt_list, code_length):
             print(f"Attempt {x:02d}: {att.attempt}      Hit: {att.hit} Near Miss: {att.miss}")
             # print(att.show()) 
 
-def game_over():
-    print("GAME OVER!!!")
+def game_over(player, attempt_number):
+    choice = ""
+    while choice != " ":
+        welcome_banner()
+        print(f"Well done {player}, you broke the code in {attempt_number} attempts!")
+        print("GAME OVER!!!\n")
+        choice = input("Press Space Bar then return to continue \n")
+
 
 def get_player_name():
     user = input("Please enter a new or existing user name: \n")
@@ -274,7 +289,8 @@ def main():
             current_attempt = Attempt(guess, exact_match, near_miss)
             attempt_list = build_attempt_list(attempt_list, current_attempt)
 
-    game_over()
+    game_over(player, len(attempt_list))
+    game_menu()
 
 welcome_banner()
 
