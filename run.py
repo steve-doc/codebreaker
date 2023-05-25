@@ -82,16 +82,16 @@ def instructions():
 
         """)
         print("""
-        The aim of the game is to crack the numeric code in as few attempts
-        as possible. So a low score is actually a high score.
+The aim of the game is to crack the numeric code in as few attempts
+as possible. So a low score is actually a high score.
 
-        The code will be either 3, 4, or 5 digits long, depending on the difficulty 
-        of the game you choose (East, Normal or Difficult).
+The code will be either 3, 4, or 5 digits long, depending on the difficulty 
+of the game you choose (East, Normal or Difficult).
 
-        The codes will not have leading zeros, so nothing like 001 (easy) or 01234 (normal).  
-        Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are valid.
+The codes will not have leading zeros, so nothing like 001 (easy) or 01234 (normal).  
+Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are valid.
 
-        3 digit codes are between 100 and 999
+3 digit codes are between 100 and 999
         """)
         choice = input("Press 'C' to continue \n")
     game_menu()
