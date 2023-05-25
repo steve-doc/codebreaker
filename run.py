@@ -73,7 +73,7 @@ def get_player_guess(code_length):
         try:
             guess = 0
             while len(str(guess)) != code_length:
-                guess = int(input(f"\nEnter a {code_length} digit number to crack the code: "))
+                guess = int(input(f"\nEnter a {code_length} digit number to crack the code: "\n))
                 if len(str(guess)) != code_length:
                     print(f"Must be {code_length} digits long and not have leading zeros")
 
@@ -162,7 +162,7 @@ def game_over():
     print("GAME OVER!!!")
 
 def get_player_name():
-    user = input("Please enter a new or existing user name: ")
+    user = input("Please enter a new or existing user name: \n")
     return user
 
 def check_existing_player(user):
@@ -185,7 +185,7 @@ def ask_game_level():
     print("(D)ifficult (5 Digit code)")
     check = True
     while check == True:
-        l = input("b/n/d: ")
+        l = input("b/n/d: \n")
         level = l.lower()
         if level != "b" and level != "n" and level != "d":
             print("Must answer 'b', 'n' or 'd' ")
