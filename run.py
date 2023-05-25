@@ -73,7 +73,7 @@ def get_player_guess(code_length):
         try:
             guess = 0
             while len(str(guess)) != code_length:
-                guess = int(input(f"\nEnter a {code_length} digit number to crack the code: "\n))
+                guess = int(input(f"\nEnter a {code_length} digit number to crack the code: \n"))
                 if len(str(guess)) != code_length:
                     print(f"Must be {code_length} digits long and not have leading zeros")
 
