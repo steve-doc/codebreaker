@@ -39,7 +39,7 @@ def welcome_banner():
 \____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   \033[0m \n\n""")
 
 
-def game_menu():
+def game_menu(player):
     """
     Displays game menu, take user choice and acts on choice
     """
@@ -55,17 +55,18 @@ def game_menu():
         """)
         choice = input("Please choose: \n").strip()
         if choice == "1":
-            main()
+            main(player)
         elif choice == "2":
-            instructions()
+            instructions(player)
         elif choice == "3":
-            high_scores()
+            high_scores(player)
         elif choice == "4":
             print("Thanks for playing.  Share Code Breaker with your friends and come back soon!")
+            update_spreadsheet(player)
             sys.exit(0)
         
 
-def instructions():
+def instructions(player):
     """
     Print out game instructions
     """
@@ -94,15 +95,15 @@ Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are 
 3 digit codes are between 100 and 999
         """)
         choice = input("Press Space Bar then return to continue \n")
-    game_menu()
+    game_menu(player)
 
-def high_scores():
+def high_scores(player):
     choice = ""
     while choice != " ":
         welcome_banner()
         print("High Scores\n")
         choice = input("Press Space Bar then return to continue \n")
-    game_menu()
+    game_menu(player)
 
 def generate_code(code_length):
     """
@@ -199,11 +200,11 @@ def show_previous_attempts(attempt_list, code_length):
     print("The secret code is\n")
 
     if code_length == 3:
-        print("X X X\n")
+        print("\033[0;31mX X X\033[0m\n")
     elif code_length == 4:
-        print("X X X X\n")
+        print("\033[0;31mX X X X\033[0m\n")
     else:
-        print("X X X X X\n")
+        print("\033[0;31mX X X X X\033[0m\n")
 
     print("A 'Hit' means you have guessed the RIGHT number in the RIGHT place\n")
     print("A 'Near Miss' means you have guessed the RIGHT number in the WRONG place\n")
@@ -214,13 +215,7 @@ def show_previous_attempts(attempt_list, code_length):
             print(f"Attempt {x:02d}: {att.attempt}      Hit: {att.hit} Near Miss: {att.miss}")
             # print(att.show()) 
 
-def game_over(player, attempt_number):
-    choice = ""
-    while choice != " ":
-        welcome_banner()
-        print(f"Well done {player}, you broke the code in {attempt_number} attempts!")
-        print("GAME OVER!!!\n")
-        choice = input("Press Space Bar then return to continue \n")
+
 
 
 def get_player_name():
@@ -231,14 +226,23 @@ def check_existing_player(user):
     players = SHEET.get_all_values()
     for player in players:
         if user.lower() == player[0]:
-            print(f"\nWelcome back {user}, are you ready to beat your previous score?\n")
-            print("You current high scores are\n")
-            print(f"Beginner - {player[1]}\nNormal - {player[2]}\nDifficult - {player[3]}\n")
+            print(f"\nWelcome back {user}, are you ready to beat your Best Scores?\n")
+            print("You current Best Scores are\n")
+            print(f"   Beginner - {player[1]}\n   Normal - {player[2]}\n   Difficult - {player[3]}\n")
+            choice = ""
+            while choice != " ":
+                choice = input("Press Space Bar then return to preceed to Game Menu \n")
             return player
-    
-    print(f"\nWelcome to CodeBreak {user}, would you like to see the rules?")
-    new_user = [user.lower(), "none", "none", "none"]
+       
+    print(f"\nWelcome to CodeBreak {user}.")
+    new_user = [user.lower(), "None", "None", "None"] 
     SHEET.append_row(new_user)
+    choice = ""
+    while choice != " ":
+        choice = input("Press Space Bar then return to preceed to Game Menu \n")
+    player = user.lower()
+    return player
+
 
 def ask_game_level():
     """
@@ -251,7 +255,7 @@ def ask_game_level():
     print("(D)ifficult (5 Digit code)")
     check = True
     while check == True:
-        l = input("B/N/D: \n")
+        l = input("B/N/D: \n").strip()
         level = l.lower()
         if level not in {"b", "n", "d"}:
             print("Must answer 'b', 'n' or 'd' ")
@@ -272,6 +276,11 @@ def set_game_level(level):
 
     return code_length
 
+def game_over(input_name, attempt_number):
+    welcome_banner()
+    print("GAME OVER!!!\n")
+    print(f"Well done {input_name}, you broke the code in {attempt_number} attempts!\n")
+
 def check_high_score(level, attempts, player):
     """
     Check if score beats existing high score.
@@ -280,29 +289,43 @@ def check_high_score(level, attempts, player):
     # player_data = 
     if level == "b":
         ind = 1
+        level_name = "Beginner"
     elif level == "n":
         ind = 2
+        level_name = "Normal"
     elif level == "d":
         ind = 3
+        level_name = "Difficult"
 
-    if player[ind] == None:
-        print(f"Congratulations, you set your first best Score at {level.upper()} level")
+    if player[ind] == "None":
+        print(f"Congratulations, you set your first Best Score of {attempts} at {level_name} level")
+        player[ind] = attempts
     elif attempts < player[ind]:
-        print(f"Congrats, new best score at {level.upper()} level")
-    elif attempts == player:
-        print(f"Not bad, you equalled your best score at {level.upper()} level")
+        print(f"Congrats, you set a new Best Score of {attempts} at {level_name} level")
+        player[ind] = attempts
+    elif attempts == player[ind]:
+        print(f"Not bad, you equalled your Best Score of {attempts} at {level_name} level")
     else:
-        print(f"Never mind, you missed your best score at {level.upper()} level")
+        print(f"Never mind, you missed your Best Score of {player[ind]} by {attempts - player[ind]} at {level_name} level")
+
+    choice = ""
+    while choice != " ":
+        choice = input("Press Space Bar then return to continue \n")
+
+    return player
     
+def update_spreadsheet(player):
+    cell = SHEET.find(player[0])
+    row = str(cell.row)
+    update_range = "A" + row + ":" + "D" + row
+    SHEET.update(update_range, [player])
 
-
-def main():
+def main(player):
     """
     Main game function
     """
     welcome_banner()
-    input_name = get_player_name()
-    player = check_existing_player(input_name)
+
 
     level = ask_game_level()
     code_length = set_game_level(level)
@@ -318,18 +341,17 @@ def main():
             current_attempt = Attempt(guess, exact_match, near_miss)
             attempt_list = build_attempt_list(attempt_list, current_attempt)
 
-    # check_high_score(level, len(attempt_list), player)
+    
     game_over(input_name, len(attempt_list))
-    game_menu()
+    player = check_high_score(level, len(attempt_list), player)
+    game_menu(player)
 
 welcome_banner()
+input_name = get_player_name()
+player = check_existing_player(input_name)
+game_menu(player)
 
-# game_menu()
 
-player = ["dave", 10, 20, None]
-level = "d"
-attempt_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-check_high_score(level, len(attempt_list), player)
 
 
 
