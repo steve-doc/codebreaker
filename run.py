@@ -1,6 +1,7 @@
 import gspread
 from random import randrange
 from os import system
+import sys
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -43,11 +44,8 @@ def game_menu():
     Displays game menu, take user choice and acts on choice
     """
 
-    
-
-
-    choice = 0
-    while choice != 1 and choice != 2 and choice != 3 and choice != 4:
+    choice = None
+    while choice not in {"1", "2", "3", "4"}:
         welcome_banner()
         print("""
         1 - Play new game
@@ -55,7 +53,7 @@ def game_menu():
         3 - High Scores
         4 - Quit
         """)
-        choice = input("Please choose: \n")
+        choice = input("Please choose: \n").strip()
         if choice == "1":
             main()
         elif choice == "2":
@@ -63,14 +61,14 @@ def game_menu():
         elif choice == "3":
             high_scores()
         elif choice == "4":
-            print("Thanks for playing.  Share with your friends and come back soon!")
-            break
+            print("Thanks for playing.  Share Code Breaker with your friends and come back soon!")
+            sys.exit(0)
         
 
 def instructions():
-
-
-
+    """
+    Print out game instructions
+    """
     choice = ""
     while choice != " ":
         welcome_banner()
@@ -236,13 +234,17 @@ def check_existing_player(user):
             print(f"\nWelcome back {user}, are you ready to beat your previous score?\n")
             print("You current high scores are\n")
             print(f"Beginner - {player[1]}\nNormal - {player[2]}\nDifficult - {player[3]}\n")
-            return
+            return player
     
     print(f"\nWelcome to CodeBreak {user}, would you like to see the rules?")
     new_user = [user.lower(), "none", "none", "none"]
     SHEET.append_row(new_user)
 
 def ask_game_level():
+    """
+    Takes input from player on what game level they want to play and
+    returns level to be used for creating code length.
+    """
     print(" What level of game would you like to play?")
     print("\n(B)eginner (3 Digit code)")
     print("(N)ormal (4 Digit code)")
@@ -251,13 +253,16 @@ def ask_game_level():
     while check == True:
         l = input("B/N/D: \n")
         level = l.lower()
-        if level != "b" and level != "n" and level != "d":
+        if level not in {"b", "n", "d"}:
             print("Must answer 'b', 'n' or 'd' ")
         else:
             check = False
     return level
 
 def set_game_level(level):
+    """
+    sets code length based on game level
+    """
     if level == "b":
         code_length = 3
     elif level == "d":
@@ -267,13 +272,37 @@ def set_game_level(level):
 
     return code_length
 
+def check_high_score(level, attempts, player):
+    """
+    Check if score beats existing high score.
+    """
+    players = SHEET.get_all_values()
+    # player_data = 
+    if level == "b":
+        ind = 1
+    elif level == "n":
+        ind = 2
+    elif level == "d":
+        ind = 3
+
+    if player[ind] == None:
+        print(f"Congratulations, you set your first best Score at {level.upper()} level")
+    elif attempts < player[ind]:
+        print(f"Congrats, new best score at {level.upper()} level")
+    elif attempts == player:
+        print(f"Not bad, you equalled your best score at {level.upper()} level")
+    else:
+        print(f"Never mind, you missed your best score at {level.upper()} level")
+    
+
+
 def main():
     """
     Main game function
     """
     welcome_banner()
-    player = get_player_name()
-    check_existing_player(player)
+    input_name = get_player_name()
+    player = check_existing_player(input_name)
 
     level = ask_game_level()
     code_length = set_game_level(level)
@@ -289,14 +318,18 @@ def main():
             current_attempt = Attempt(guess, exact_match, near_miss)
             attempt_list = build_attempt_list(attempt_list, current_attempt)
 
-    game_over(player, len(attempt_list))
+    # check_high_score(level, len(attempt_list), player)
+    game_over(input_name, len(attempt_list))
     game_menu()
 
 welcome_banner()
 
-# main()
+# game_menu()
 
-game_menu()
+player = ["dave", 10, 20, None]
+level = "d"
+attempt_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+check_high_score(level, len(attempt_list), player)
 
 
 
