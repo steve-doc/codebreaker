@@ -98,12 +98,43 @@ Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are 
     game_menu(player)
 
 def high_scores(player):
-    choice = ""
-    while choice != " ":
-        welcome_banner()
-        print("High Scores\n")
-        choice = input("Press Space Bar then return to continue \n")
-    game_menu(player)
+    players = SHEET.get_all_values()
+    for ind, x in enumerate(players):
+        if x[0] == player[0]:
+            players[ind] = player
+    easy = []
+    normal = []
+    difficult = []
+    for y in range(1, len(players)):
+        if players[y][1] != "None":
+            easy.append((players[y][0], players[y][1]))
+        if players[y][2] != "None":
+           normal.append((players[y][0], players[y][2]))
+        if players[y][3] != "None":
+            difficult.append((players[y][0], players[y][3]))
+    
+    easy_sorted = sorted(easy, key = lambda x: int(x[1]))
+    normal_sorted = sorted(normal, key = lambda x: int(x[1]))
+    difficult_sorted = sorted(difficult, key = lambda x: int(x[1]))
+    
+    print("EASY LEVEL LEADER BOARD\n")
+    for s in easy_sorted:
+        print(f"{s[0]:15}  {s[1]}")
+
+    print("\n\nNORMAL LEVEL LEADER BOARD\n")
+    for s in normal_sorted:
+        print(f"{s[0]:15}  {s[1]}")
+
+    print("\n\nDIFFICULT LEVEL LEADER BOARD\n")
+    for s in difficult_sorted:
+        print(f"{s[0]:15}  {s[1]}")
+    
+    print("\n\n")
+    # choice = ""
+    # while choice != " ":
+    #     
+    #     choice = input("Press Space Bar then return to continue \n")
+    # game_menu(player)
 
 def generate_code(code_length):
     """
@@ -347,9 +378,11 @@ def main(player):
     game_menu(player)
 
 welcome_banner()
-input_name = get_player_name()
-player = check_existing_player(input_name)
-game_menu(player)
+# input_name = get_player_name()
+# player = check_existing_player(input_name)
+# game_menu(player)
+player = ["stevied", 5, 10, 50]
+high_scores(player)
 
 
 
