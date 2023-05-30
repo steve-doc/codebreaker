@@ -289,7 +289,7 @@ def check_existing_player(user):
                 choice = input("Press Space Bar then return to preceed to Game Menu \n")
             return player
        
-    print(f"\nWelcome to CodeBreak {user}.\n")
+    print(f"\nWelcome to CodeBreaker {user}!\n")
     new_user = [user.lower(), "None", "None", "None"] 
     SHEET.append_row(new_user)
     player = new_user
@@ -365,6 +365,8 @@ def check_high_score(level, attempts, player):
     else:
         print(f"Unfortunately, you missed your Best Score of {player[ind]} by {attempts - int(score)} at {level_name} level\n")
 
+    update_spreadsheet(player)
+    
     choice = ""
     while choice != " ":
         choice = input("Press Space Bar then return to continue \n")

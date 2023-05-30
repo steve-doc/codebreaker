@@ -30,3 +30,6 @@ The deployment terminal is set to 80 columns by 24 rows. That means that each li
 ---
 
 Happy coding!
+
+bugs
+getting error comparing string to int when check high scores only when new user "None" being high score
