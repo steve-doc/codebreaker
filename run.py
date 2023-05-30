@@ -50,7 +50,7 @@ def game_menu(player):
         print("""
         1 - Play new game
         2 - Instructions
-        3 - High Scores
+        3 - Leader Boards
         4 - Quit
         """)
         choice = input("Please choose: \n").strip()
@@ -84,7 +84,7 @@ def instructions(player):
         \033[0m""")
         print("""
 The aim of the game is to crack the numeric code in as few attempts
-as possible. So a low score is actually a high score.
+as possible. So a low score is actually the Best Score.
 
 The code will be either 3, 4, or 5 digits long, depending on the difficulty 
 of the game you choose (East, Normal or Difficult).
@@ -93,6 +93,24 @@ The codes will not have leading zeros, so nothing like 001 (easy) or 01234 (norm
 Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are valid.
 
 3 digit codes are between 100 and 999
+4 digit codes are between 1000 and 9999
+5 digit codes are between 10000 and 99999
+
+You will be asked to attempt a code.  Enter your attempt in the ranges above.  
+
+If you get the code exactly right you have won the game and your score will be recorded if it is your first Score or your Best Score.
+
+If you don't get the code exactly right you will be told how many "Hits" or "Near Misses" your attempt achieved.
+
+A "Hit" means you got a number right in the right position.
+
+A "Near Miss" means you got a right number but in the wrong position.
+
+The twist is you have to figure out which numbers we "Hits" and which were "Near Misses"
+
+As you progress you will see your previous attempts logged above so you can use your logical skills to figure out the code.
+
+GOOD LUCK WITH CRACKING THE CODE!
         """)
         choice = input("Press Space Bar then return to continue \n")
     game_menu(player)
@@ -116,25 +134,31 @@ def high_scores(player):
     easy_sorted = sorted(easy, key = lambda x: int(x[1]))
     normal_sorted = sorted(normal, key = lambda x: int(x[1]))
     difficult_sorted = sorted(difficult, key = lambda x: int(x[1]))
-    
+    welcome_banner()
     print("EASY LEVEL LEADER BOARD\n")
+    if len(easy_sorted) > 10:
+        del easy_sorted[10:]
     for s in easy_sorted:
         print(f"{s[0]:15}  {s[1]}")
 
     print("\n\nNORMAL LEVEL LEADER BOARD\n")
+    if len(normal_sorted) > 10:
+        del normal_sorted[10:]
     for s in normal_sorted:
         print(f"{s[0]:15}  {s[1]}")
 
     print("\n\nDIFFICULT LEVEL LEADER BOARD\n")
+    if len(difficult_sorted) > 10:
+        del difficult_sorted[10:]
     for s in difficult_sorted:
         print(f"{s[0]:15}  {s[1]}")
     
     print("\n\n")
-    # choice = ""
-    # while choice != " ":
-    #     
-    #     choice = input("Press Space Bar then return to continue \n")
-    # game_menu(player)
+    choice = ""
+    while choice != " ":
+        
+        choice = input("Press Space Bar then return to continue \n")
+    game_menu(player)
 
 def generate_code(code_length):
     """
@@ -265,13 +289,14 @@ def check_existing_player(user):
                 choice = input("Press Space Bar then return to preceed to Game Menu \n")
             return player
        
-    print(f"\nWelcome to CodeBreak {user}.")
+    print(f"\nWelcome to CodeBreak {user}.\n")
     new_user = [user.lower(), "None", "None", "None"] 
     SHEET.append_row(new_user)
+    player = new_user
     choice = ""
     while choice != " ":
         choice = input("Press Space Bar then return to preceed to Game Menu \n")
-    player = user.lower()
+
     return player
 
 
@@ -316,8 +341,7 @@ def check_high_score(level, attempts, player):
     """
     Check if score beats existing high score.
     """
-    players = SHEET.get_all_values()
-    # player_data = 
+
     if level == "b":
         ind = 1
         level_name = "Beginner"
@@ -328,16 +352,18 @@ def check_high_score(level, attempts, player):
         ind = 3
         level_name = "Difficult"
 
-    if player[ind] == "None":
-        print(f"Congratulations, you set your first Best Score of {attempts} at {level_name} level")
+    score = player[ind]
+    
+    if score == "None":
+        print(f"Congratulations, you set your first Best Score of {attempts} at {level_name} level\n")
         player[ind] = attempts
-    elif attempts < player[ind]:
-        print(f"Congrats, you set a new Best Score of {attempts} at {level_name} level")
+    elif attempts < int(score):
+        print(f"Congrats, you set a new Best Score of {attempts} at {level_name} level\n")
         player[ind] = attempts
-    elif attempts == player[ind]:
-        print(f"Not bad, you equalled your Best Score of {attempts} at {level_name} level")
+    elif attempts == int(score):
+        print(f"Not bad, you equalled your Best Score of {attempts} at {level_name} level\n")
     else:
-        print(f"Never mind, you missed your Best Score of {player[ind]} by {attempts - player[ind]} at {level_name} level")
+        print(f"Unfortunately, you missed your Best Score of {player[ind]} by {attempts - int(score)} at {level_name} level\n")
 
     choice = ""
     while choice != " ":
@@ -378,11 +404,10 @@ def main(player):
     game_menu(player)
 
 welcome_banner()
-# input_name = get_player_name()
-# player = check_existing_player(input_name)
-# game_menu(player)
-player = ["stevied", 5, 10, 50]
-high_scores(player)
+input_name = get_player_name()
+player = check_existing_player(input_name)
+game_menu(player)
+
 
 
 
