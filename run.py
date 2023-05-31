@@ -274,8 +274,13 @@ def show_previous_attempts(attempt_list, code_length):
 
 
 def get_player_name():
-    user = input("Please enter a new or existing user name: \n")
-    return user
+    user = "*"
+    while user.isalnum() == False:
+        user = input("Please enter a new or existing user name: \n")
+        if user.isalnum() == False:
+            print("Must be alpanumeric")
+        else:
+            return user
 
 def check_existing_player(user):
     players = SHEET.get_all_values()
