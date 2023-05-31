@@ -116,13 +116,21 @@ GOOD LUCK WITH CRACKING THE CODE!
     game_menu(player)
 
 def high_scores(player):
+    """
+    displays three leaderboard for east, normal & difficult levels
+
+    """
     players = SHEET.get_all_values()
     for ind, x in enumerate(players):
         if x[0] == player[0]:
             players[ind] = player
+    
+    #declares 3 empty lists
     easy = []
     normal = []
     difficult = []
+
+    # Adds scores to each list where there is a score, not "None"
     for y in range(1, len(players)):
         if players[y][1] != "None":
             easy.append((players[y][0], players[y][1]))
@@ -131,10 +139,13 @@ def high_scores(player):
         if players[y][3] != "None":
             difficult.append((players[y][0], players[y][3]))
     
+    #sorts lists based on score (scocnd index of sub list)
     easy_sorted = sorted(easy, key = lambda x: int(x[1]))
     normal_sorted = sorted(normal, key = lambda x: int(x[1]))
     difficult_sorted = sorted(difficult, key = lambda x: int(x[1]))
     welcome_banner()
+    
+    #print 3 leaderboards
     print("EASY LEVEL LEADER BOARD\n")
     if len(easy_sorted) > 10:
         del easy_sorted[10:]
@@ -154,15 +165,15 @@ def high_scores(player):
         print(f"{s[0]:15}  {s[1]}")
     
     print("\n\n")
+    #wait for space bar to be pressed
     choice = ""
-    while choice != " ":
-        
+    while choice != " ": 
         choice = input("Press Space Bar then return to continue \n")
     game_menu(player)
 
 def generate_code(code_length):
     """
-    Generate randon code of 3, 4 or 5 characters in length
+    Generate random code of 3, 4 or 5 characters in length
     """
     if code_length == 3:
         start = 100
@@ -210,7 +221,7 @@ def check_answer(code, guess):
     """
     Checks each character of code for exact match then for 
     near misses (right character in wrong place).
-    Buils lists of matches and near misses.
+    Builds lists of matches and near misses.
     Returns length of each list.
     """
     code_list = make_list(code)
@@ -274,15 +285,23 @@ def show_previous_attempts(attempt_list, code_length):
 
 
 def get_player_name():
+    """
+    Get player name.  Check it is alphanumberic.
+    """
     user = "*"
     while user.isalnum() == False:
         user = input("Please enter a new or existing user name: \n")
         if user.isalnum() == False:
-            print("Must be alpanumeric")
+            print("Must be alphanumeric")
         else:
             return user
 
 def check_existing_player(user):
+    """
+    Check if new or existing user.
+    If existing show current Best Scores
+    If new, add to spreadsheet with scores set to "None"
+    """
     players = SHEET.get_all_values()
     for player in players:
         if user.lower() == player[0]:
@@ -338,6 +357,9 @@ def set_game_level(level):
     return code_length
 
 def game_over(input_name, attempt_number):
+    """
+    Display "Game Over" and tell player what their score was.
+    """
     welcome_banner()
     print("GAME OVER!!!\n")
     print(f"Well done {input_name}, you broke the code in {attempt_number} attempts!\n")
@@ -379,6 +401,9 @@ def check_high_score(level, attempts, player):
     return player
     
 def update_spreadsheet(player):
+    """
+    Update score on spreadsheet
+    """
     cell = SHEET.find(player[0])
     row = str(cell.row)
     update_range = "A" + row + ":" + "D" + row
