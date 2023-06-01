@@ -24,8 +24,10 @@ class Attempt:
         self.attempt = attempt
         self.hit = hit
         self.miss = miss
-    def show(self):
-        print(f"Attempt: {self.attempt} Hit: {self.hit}  Miss: {self.miss}")
+    def show(self, x):
+        print(
+            f"Attempt {x:02d}:    \033[1;34m{self.attempt}\033[0m   \
+            Hit: \033[0;32m{self.hit}\033[0m  Miss: \033[1;35m{self.miss}\033[0m")
 
 def welcome_banner():
     """
@@ -235,8 +237,6 @@ def check_answer(code, guess):
         near_miss = 0
     else:
         for i in range(len(code_list) -1, -1, -1):
-            # print(i)
-            # print(code_list[i], guess_list[i])
             if guess_list[i] == code_list[i]:
                 match_list.append(code_list[i])
                 remain_code_list.pop(i)
@@ -278,11 +278,7 @@ def show_previous_attempts(attempt_list, code_length):
     if len(attempt_list) != 0:
         for att in attempt_list:
             x = attempt_list.index(att) + 1
-            print(f"Attempt {x:02d}: {att.attempt}      Hit: {att.hit} Near Miss: {att.miss}")
-            # print(att.show()) 
-
-
-
+            att.show(x)
 
 def get_player_name():
     """
@@ -423,12 +419,11 @@ def main(player):
     attempt_list = []
     exact_match = 0
     while exact_match != len(str(code)):
-        if attempt_list != "done":
-            show_previous_attempts(attempt_list, code_length)
-            guess = get_player_guess(code_length)
-            exact_match, near_miss = check_answer(code, guess)
-            current_attempt = Attempt(guess, exact_match, near_miss)
-            attempt_list = build_attempt_list(attempt_list, current_attempt)
+        show_previous_attempts(attempt_list, code_length)
+        guess = get_player_guess(code_length)
+        exact_match, near_miss = check_answer(code, guess)
+        current_attempt = Attempt(guess, exact_match, near_miss)
+        attempt_list = build_attempt_list(attempt_list, current_attempt)
 
     
     game_over(input_name, len(attempt_list))
