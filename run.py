@@ -205,7 +205,10 @@ def get_player_guess(code_length):
         try:
             guess = 0
             while len(str(guess)) != code_length:
-                guess = int(input(f"\nEnter a {code_length} digit number to crack the code: \n"))
+                guess = int(input(f"\nEnter a {code_length} digit number to crack the code (0 to quit): \n"))
+                if guess == 0:
+                    return guess
+                guess = int(guess)
                 if len(str(guess)) != code_length:
                     print(f"Must be {code_length} digits long and not have leading zeros")
 
@@ -427,6 +430,8 @@ def main(player):
     while exact_match != len(str(code)):
         show_previous_attempts(attempt_list, code_length)
         guess = get_player_guess(code_length)
+        if guess == 0:
+            game_menu(player)
         exact_match, near_miss = check_answer(code, guess)
         current_attempt = Attempt(guess, exact_match, near_miss)
         attempt_list = build_attempt_list(attempt_list, current_attempt)
