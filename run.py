@@ -1,9 +1,15 @@
+"""
+Required Library imports
+"""
 import gspread
 from random import randrange
 from os import system
 import sys
 from google.oauth2.service_account import Credentials
 
+"""
+Set up scope 
+"""
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -89,7 +95,7 @@ The aim of the game is to crack the numeric code in as few attempts
 as possible. So a low score is actually the Best Score.
 
 The code will be either 3, 4, or 5 digits long, depending on the difficulty 
-of the game you choose (East, Normal or Difficult).
+of the game you choose (Easy, Normal or Difficult).
 
 The codes will not have leading zeros, so nothing like 001 (easy) or 01234 (normal).  
 Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are valid.
@@ -119,7 +125,7 @@ GOOD LUCK WITH CRACKING THE CODE!
 
 def high_scores(player):
     """
-    displays three leaderboard for east, normal & difficult levels
+    displays three leaderboard for easy, normal & difficult levels
 
     """
     players = SHEET.get_all_values()
