@@ -78,10 +78,9 @@ def instructions(player):
     """
     Print out game instructions
     """
-    choice = ""
-    while choice != " ":
-        welcome_banner()
-        print("""\033[31m
+    welcome_banner()
+
+    print("""\033[31m
     ____           __                  __  _                 
    /  _/___  _____/ /________  _______/ /_(_)___  ____  _____
    / // __ \/ ___/ __/ ___/ / / / ___/ __/ / __ \/ __ \/ ___/
@@ -90,7 +89,7 @@ def instructions(player):
                                                              
 
         \033[0m""")
-        print("""
+    print("""
 The aim of the game is to crack the numeric code in as few attempts
 as possible. So a low score is actually the Best Score.
 
@@ -103,7 +102,12 @@ Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are 
 3 digit codes are between 100 and 999
 4 digit codes are between 1000 and 9999
 5 digit codes are between 10000 and 99999
-
+    """)
+    choice = " "
+    while choice != "":
+        choice = input("\u001b[32mPress return to continue \033[0m\n")
+    
+    print("""
 You will be asked to attempt a code.  Enter your attempt in the ranges above.  
 
 If you get the code exactly right you have won the game and your score will be recorded if it is your first Score or your Best Score.
@@ -118,9 +122,13 @@ The twist is you have to figure out which numbers we "Hits" and which were "Near
 
 As you progress you will see your previous attempts logged above so you can use your logical skills to figure out the code.
 
-GOOD LUCK WITH CRACKING THE CODE!
-        """)
-        choice = input("Press Space Bar then return to continue \n")
+GOOD LUCK WITH CRACKING THE CODE!\n
+    """)
+     
+    choice = " "
+    while choice != "":
+        choice = input("\u001b[32mPress return to continue \033[0m\n")
+
     game_menu(player)
 
 def high_scores(player):
