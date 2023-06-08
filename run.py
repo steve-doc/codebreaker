@@ -168,11 +168,19 @@ def high_scores(player):
     for s in easy_sorted:
         print(f"{s[0]:15}  {s[1]}")
 
+    choice = " "
+    while choice != "":
+        choice = input("\u001b[32mPress return to continue \033[0m\n")
+
     print("\n\nNORMAL LEVEL LEADER BOARD\n")
     if len(normal_sorted) > 10:
         del normal_sorted[10:]
     for s in normal_sorted:
         print(f"{s[0]:15}  {s[1]}")
+    
+    choice = " "
+    while choice != "":
+        choice = input("\u001b[32mPress return to continue \033[0m\n")
 
     print("\n\nDIFFICULT LEVEL LEADER BOARD\n")
     if len(difficult_sorted) > 10:
@@ -181,10 +189,11 @@ def high_scores(player):
         print(f"{s[0]:15}  {s[1]}")
     
     print("\n\n")
-    #wait for space bar to be pressed
-    choice = ""
-    while choice != " ": 
-        choice = input("Press Space Bar then return to continue \n")
+
+    choice = " "
+    while choice != "":
+        choice = input("\u001b[32mPress return to continue \033[0m\n")
+
     game_menu(player)
 
 def generate_code(code_length):
@@ -321,18 +330,18 @@ def check_existing_player(user):
             print(f"\nWelcome back {user}, are you ready to beat your Best Scores?\n")
             print("You current Best Scores are\n")
             print(f"   Beginner - {player[1]}\n   Normal - {player[2]}\n   Difficult - {player[3]}\n")
-            choice = ""
-            while choice != " ":
-                choice = input("Press Space Bar then return to preceed to Game Menu \n")
+            choice = " "
+            while choice != "":
+                choice = input("\u001b[32mPress return to continue \033[0m\n")
             return player
        
     print(f"\nWelcome to CodeBreaker {user}!\n")
     new_user = [user.lower(), "None", "None", "None"] 
     SHEET.append_row(new_user)
     player = new_user
-    choice = ""
-    while choice != " ":
-        choice = input("Press Space Bar then return to preceed to Game Menu \n")
+    choice = " "
+    while choice != "":
+        choice = input("\u001b[32mPress return to continue \033[0m\n")
 
     return player
 
@@ -407,9 +416,9 @@ def check_high_score(level, attempts, player):
 
     update_spreadsheet(player)
     
-    choice = ""
-    while choice != " ":
-        choice = input("Press Space Bar then return to continue \n")
+    choice = " "
+    while choice != "":
+        choice = input("\u001b[32mPress return to continue \033[0m\n")
 
     return player
     
