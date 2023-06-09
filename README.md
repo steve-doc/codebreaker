@@ -105,18 +105,14 @@ When game is over (player gets the code correct) their score is compared to thei
 3. Gitpod - Cloud based 
 4. Google Sheets API - Link to Google sheet to store player scores.
 5. Heroku - To deploy live application
+6. LucidCharts for flow chart
 
 ## <a name="testing">Testing</a>
 
 ### Code validated using [CI Python Linter](https://pep8ci.herokuapp.com/#)
 
-I used [ASCII Art Generator](https://www.ascii-art-generator.org/) to generate multi line headings for the game and the instructions page.  
-![Game heading](assets/readme_images/game-heading.png)
-![Instructions heading](assets/readme_images/instructions_heading.png)
-Have same issue with multi line instructions strings.
-These are generating multiple PEP8 errors when run through [CI Python Linter](https://pep8ci.herokuapp.com/#).  These include "White Space", "Line too long" and "Invalid escape sequence" errors.  I couldn't resolve these errors without effecting the layout of the text.
+![Python Linter](assets/readme_images/python_checker.png)
 
-These errors are limited to lines
 
 ### Browser Testing
 
@@ -156,11 +152,7 @@ Testing layout and appearance of game for consistency throughout browsers.
 1. An error comparing string to int when check high scores only when new user "None" being high score. Discovered I had assigned wrong value to variable in another function. Resolved.
 2. Heroku "Application error" in deployed code.  Was caused due to running out of Gitpod hours.  Have to create new workspace under CI Students Gitpod account and redeploy appplication.  Resloved.
 ## Bugs Unresolved
-1. I used [ASCII Art Generator](https://www.ascii-art-generator.org/) to generate multi line headings for the game and the instructions page.  
-![Game heading](assets/readme_images/game-heading.png)
-![Instructions heading](assets/readme_images/instructions_heading.png)
-Have same issue with multi line instructions strings.
-These are generating multiple PEP8 errors when run through [CI Python Linter](https://pep8ci.herokuapp.com/#).  These include "White Space", "Line too long" and "Invalid escape sequence" errors.  I couldn't resolve these errors without effecting the layout of the text.
+None
 
 ## <a name="deployment">Deployment</a>
 
