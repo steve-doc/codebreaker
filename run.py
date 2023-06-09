@@ -1,21 +1,18 @@
-"""
-Required Library imports
-"""
+# Required Library imports
 import gspread
 from random import randrange
 from os import system
 import sys
 from google.oauth2.service_account import Credentials
 
-"""
-Set up scope
-"""
+# Setup scope
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
     ]
 
+# Setup credentials
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
@@ -46,9 +43,9 @@ def welcome_banner():
     print("\n", "Welcome to\n", """\033[34m
    ______          __        ____                  __             __
   / ____/___  ____/ /__     / __ )________  ____ _/ /_____  _____/ /
- / /   / __ \/ __  / _ \   / __  / ___/ _ \\/ __ `/ //_/ _ \/ ___/ / 
-/ /___/ /_/ / /_/ /  __/  / /_/ / /  /  __/ /_/ / ,< /  __/ /  /_/  
-\____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   
+ / /   / __ \\/ __  / _ \\   / __  / ___/ _ \\/ __ `/ //_/ _ \\/ ___/ /
+/ /___/ /_/ / /_/ /  __/  / /_/ / /  /  __/ /_/ / ,< /  __/ /  /_/
+\\____/\\____/\\__,_/\\___/  /_____/_/   \\___/\\__,_/_/|_|\\___/_/  (_)
 \033[0m \n\n""")
 
 
@@ -88,12 +85,12 @@ def instructions(player):
     welcome_banner()
 
     print("""\033[31m
-    ____           __                  __  _                 
+    ____           __                  __  _
    /  _/___  _____/ /________  _______/ /_(_)___  ____  _____
-   / // __ \/ ___/ __/ ___/ / / / ___/ __/ / __ \/ __ \/ ___/
- _/ // / / (__  ) /_/ /  / /_/ / /__/ /_/ / /_/ / / / (__  ) 
-/___/_/ /_/____/\__/_/   \__,_/\___/\__/_/\____/_/ /_/____/  
-                                                             
+   / // __ \\/ ___/ __/ ___/ / / / ___/ __/ / __ \\/ __ \\/ ___/
+ _/ // / / (__  ) /_/ /  / /_/ / /__/ /_/ / /_/ / / / (__  )
+/___/_/ /_/____/\\__/_/   \\__,_/\\___/\\__/_/\\____/_/ /_/____/
+
 
         \033[0m""")
     print("""
@@ -169,13 +166,13 @@ def high_scores(player):
         if players[y][3] != "None":
             difficult.append((players[y][0], players[y][3]))
 
-    # sorts lists based on score (scocnd index of sub list)
+    # sorts lists based on score (second index of sub list)
     easy_sorted = sorted(easy, key=lambda x: int(x[1]))
     normal_sorted = sorted(normal, key=lambda x: int(x[1]))
     difficult_sorted = sorted(difficult, key=lambda x: int(x[1]))
     welcome_banner()
 
-    # print 3 leaderboards
+    # print 3 leaderboards with pause between each one
     print("EASY LEVEL LEADER BOARD\n")
     if len(easy_sorted) > 10:
         del easy_sorted[10:]
@@ -240,7 +237,7 @@ def get_player_guess(code_length):
             while len(str(guess)) != code_length:
 
                 guess = int(input(question))
-                if guess == 0:
+                if guess == 0:  # If 0 exit game before finish
                     return guess
                 guess = int(guess)
                 if len(str(guess)) != code_length:
@@ -274,15 +271,17 @@ def check_answer(code, guess):
     """
     code_list = make_list(code)
     guess_list = make_list(guess)
+    # declare copies of guess_list and code_list
+    # these are decremented as the code checks the guess against
+    # correct answer
     remain_code_list = code_list
     remain_guess_list = guess_list
     match_list = []
-
     if guess == code:
         exact_match = len(code_list)
         near_miss = 0
     else:
-        for i in range(len(code_list) -1, -1, -1):
+        for i in range(len(code_list) - 1, -1, -1):
             if guess_list[i] == code_list[i]:
                 match_list.append(code_list[i])
                 remain_code_list.pop(i)
@@ -333,7 +332,7 @@ def show_previous_attempts(attempt_list, code_length):
 
 def get_player_name():
     """
-    Get player name.  Check it is alphanumberic.
+    Get player name.  Check it is alphanumeric.
     """
     user = "*"
     while not user.isalnum():
@@ -436,6 +435,8 @@ def check_high_score(level, attempts, player):
 
     score = player[ind]
 
+    # different message returned depending on how score compares
+    # to previous Best Score
     if score == "None":
         print(f"Congratulations, you set your first Best Score",
               f" of {attempts} at {level_name} level\n")
