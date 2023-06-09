@@ -32,10 +32,10 @@ class Attempt:
         self.miss = miss
 
     def show(self, x):
-        print(f"Attempt:{x:02d}", \
-        f"  \033[1;34m{self.attempt}\033[0m", \
-        f"   Hit: \033[0;32m{self.hit}\033[0m", \
-        f"  Miss: \033[1;35m{self.miss}\033[0m")
+        print(f"Attempt:{x:02d}",
+              f"  \033[1;34m{self.attempt}\033[0m",
+              f"   Hit: \033[0;32m{self.hit}\033[0m",
+              f"  Miss: \033[1;35m{self.miss}\033[0m")
 
 
 def welcome_banner():
@@ -43,11 +43,13 @@ def welcome_banner():
     Prints welcome screen to console after clearing screen.
     """
     system('clear')
-    print("\n", "Welcome to\n", """\033[34m  ______          __        ____                  __             __
+    print("\n", "Welcome to\n", """\033[34m
+   ______          __        ____                  __             __
   / ____/___  ____/ /__     / __ )________  ____ _/ /_____  _____/ /
- / /   / __ \/ __  / _ \   / __  / ___/ _ \/ __ `/ //_/ _ \/ ___/ / 
+ / /   / __ \/ __  / _ \   / __  / ___/ _ \\/ __ `/ //_/ _ \/ ___/ / 
 / /___/ /_/ / /_/ /  __/  / /_/ / /  /  __/ /_/ / ,< /  __/ /  /_/  
-\____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   \033[0m \n\n""")
+\____/\____/\__,_/\___/  /_____/_/   \___/\__,_/_/|_|\___/_/  (_)   
+\033[0m \n\n""")
 
 
 def game_menu(player):
@@ -73,8 +75,8 @@ def game_menu(player):
             high_scores(player)
         elif choice == "4":
             print("\n\nThanks for playing!\n")
-            print("Please share Code Breaker with your friends",\
-            "and come back soon!\n")
+            print("Please share Code Breaker with your friends",
+                  "and come back soon!\n")
             update_spreadsheet(player)
             sys.exit(0)
 
@@ -98,11 +100,13 @@ def instructions(player):
 The aim of the game is to crack the numeric code in as few attempts
 as possible. So a low score is actually the Best Score.
 
-The code will be either 3, 4, or 5 digits long, depending on the difficulty 
+The code will be either 3, 4, or 5 digits long, depending on the difficulty
 of the game you choose (Easy, Normal or Difficult).
 
-The codes will not have leading zeros, so nothing like 001 (easy) or 01234 (normal).  
-Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are valid.
+The codes will not have leading zeros, so nothing like 001 (easy)
+or 01234 (normal).
+Zeros can be used elsewhere in the code, so 101 (easy)
+or 10000 (difficult) are valid.
 
 3 digit codes are between 100 and 999
 4 digit codes are between 1000 and 9999
@@ -111,21 +115,25 @@ Zeros can be used elsewhere in the code, so 101 (easy) or 10000 (difficult) are 
     choice = " "
     while choice != "":
         choice = input("\u001b[32mPress return to continue \033[0m\n")
-    
+
     print("""
-You will be asked to attempt a code.  Enter your attempt in the ranges above.  
+You will be asked to attempt a code.  Enter your attempt in the ranges above.
 
-If you get the code exactly right you have won the game and your score will be recorded if it is your first Score or your Best Score.
+If you get the code exactly right you have won the game and your score will
+be recorded if it is your first Score or your Best Score.
 
-If you don't get the code exactly right you will be told how many "Hits" or "Near Misses" your attempt achieved.
+If you don't get the code exactly right you will be told how many "Hits"
+or "Near Misses" your attempt achieved.
 
 A "Hit" means you got a number right in the right position.
 
 A "Near Miss" means you got a right number but in the wrong position.
 
-The twist is you have to figure out which numbers we "Hits" and which were "Near Misses"
+The twist is you have to figure out which numbers we "Hits" and which
+were "Near Misses"
 
-As you progress you will see your previous attempts logged above so you can use your logical skills to figure out the code.
+As you progress you will see your previous attempts logged above so you
+can use your logical skills to figure out the code.
 
 GOOD LUCK WITH CRACKING THE CODE!\n
     """)
@@ -224,7 +232,8 @@ def get_player_guess(code_length):
     """
     Ask for user guess and check it is integer and correct length
     """
-    question = f"\nEnter a {code_length} digit number to crack the code (0 to quit): \n"
+    question = f"\nEnter a {code_length} digit" + \
+               " number to crack the code (0 to quit): \n"
     while True:
         try:
             guess = 0
@@ -235,8 +244,8 @@ def get_player_guess(code_length):
                     return guess
                 guess = int(guess)
                 if len(str(guess)) != code_length:
-                    print(f"Must be {code_length}" \
-                    "digits long and not have leading zeros")
+                    print(f"Must be {code_length}"
+                          "digits long and not have leading zeros")
 
             break
         except ValueError:
@@ -311,10 +320,10 @@ def show_previous_attempts(attempt_list, code_length):
     else:
         print("\033[0;31mX X X X X\033[0m\n")
 
-    print("A 'Hit' means you have guessed the " \
-    "RIGHT number in the RIGHT place\n")
-    print("A 'Near Miss' means you have guessed the " \
-    "RIGHT number in the WRONG place\n")
+    print("A 'Hit' means you have guessed the ",
+          "RIGHT number in the RIGHT place\n")
+    print("A 'Near Miss' means you have guessed the ",
+          "RIGHT number in the WRONG place\n")
 
     if len(attempt_list) != 0:
         for att in attempt_list:
@@ -344,8 +353,8 @@ def check_existing_player(user):
     players = SHEET.get_all_values()
     for player in players:
         if user.lower() == player[0]:
-            print("\nWelcome back", user, \
-            ", are you ready to beat your current Best Scores?\n")
+            print("\nWelcome back", user,
+                  ", are you ready to beat your current Best Scores?\n")
             print("You current Best Scores are\n")
             print(f"   Beginner - {player[1]}")
             print(f"   Normal - {player[2]}")
@@ -406,8 +415,8 @@ def game_over(input_name, attempt_number):
     """
     welcome_banner()
     print("GAME OVER!!!\n")
-    print(f"Well done {input_name},", \
-    f" you broke the code in {attempt_number} attempts!\n")
+    print(f"Well done {input_name},",
+          f" you broke the code in {attempt_number} attempts!\n")
 
 
 def check_high_score(level, attempts, player):
@@ -428,19 +437,20 @@ def check_high_score(level, attempts, player):
     score = player[ind]
 
     if score == "None":
-        print(f"Congratulations, you set your first Best Score", \
-        f" of {attempts} at {level_name} level\n")
+        print(f"Congratulations, you set your first Best Score",
+              f" of {attempts} at {level_name} level\n")
         player[ind] = attempts
     elif attempts < int(score):
-        print(f"Congrats, you set a new Best Score of" \
-        f" {attempts} at {level_name} level\n")
+        print(f"Congrats, you set a new Best Score of",
+              f" {attempts} at {level_name} level\n")
         player[ind] = attempts
     elif attempts == int(score):
-        print(f"Not bad, you equalled your Best Score of" \
-        f" {attempts} at {level_name} level\n")
+        print(f"Not bad, you equalled your Best Score of",
+              f" {attempts} at {level_name} level\n")
     else:
-        print(f"Unfortunately, you missed your Best Score of" \
-        f" {player[ind]} by {attempts - int(score)} at {level_name} level\n")
+        print(f"Unfortunately, you missed your Best Score of",
+              f" {player[ind]} by {attempts - int(score)} at ",
+              f"{level_name} level\n")
 
     update_spreadsheet(player)
 

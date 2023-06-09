@@ -108,8 +108,15 @@ When game is over (player gets the code correct) their score is compared to thei
 
 ## <a name="testing">Testing</a>
 
-### Code validated using [Pythonchecker](https://www.pythonchecker.com/)
-![Pythonchecker](assets/readme_images/python_checker.png)
+### Code validated using [CI Python Linter](https://pep8ci.herokuapp.com/#)
+
+I used [ASCII Art Generator](https://www.ascii-art-generator.org/) to generate multi line headings for the game and the instructions page.  
+![Game heading](assets/readme_images/game-heading.png)
+![Instructions heading](assets/readme_images/instructions_heading.png)
+Have same issue with multi line instructions strings.
+These are generating multiple PEP8 errors when run through [CI Python Linter](https://pep8ci.herokuapp.com/#).  These include "White Space", "Line too long" and "Invalid escape sequence" errors.  I couldn't resolve these errors without effecting the layout of the text.
+
+These errors are limited to lines
 
 ### Browser Testing
 
@@ -149,7 +156,11 @@ Testing layout and appearance of game for consistency throughout browsers.
 1. An error comparing string to int when check high scores only when new user "None" being high score. Discovered I had assigned wrong value to variable in another function. Resolved.
 2. Heroku "Application error" in deployed code.  Was caused due to running out of Gitpod hours.  Have to create new workspace under CI Students Gitpod account and redeploy appplication.  Resloved.
 ## Bugs Unresolved
-None
+1. I used [ASCII Art Generator](https://www.ascii-art-generator.org/) to generate multi line headings for the game and the instructions page.  
+![Game heading](assets/readme_images/game-heading.png)
+![Instructions heading](assets/readme_images/instructions_heading.png)
+Have same issue with multi line instructions strings.
+These are generating multiple PEP8 errors when run through [CI Python Linter](https://pep8ci.herokuapp.com/#).  These include "White Space", "Line too long" and "Invalid escape sequence" errors.  I couldn't resolve these errors without effecting the layout of the text.
 
 ## <a name="deployment">Deployment</a>
 
@@ -166,6 +177,11 @@ The link to the [live site](https://the-code-breaker.herokuapp.com/)
 
 ## <a name="credits">Credits</a>
 
+### Code
+
+* Used this stackoverflow thread to use lambda function to sort on list within a list - [Stackoverflow](https://stackoverflow.com/questions/4174941/how-to-sort-a-list-of-lists-by-a-specific-index-of-the-inner-list)
+
+### Support
 * My mentor Brian Macharia for some useful tips when reviewing my code.
 * Alan Bushell, our CI Facilitator for his good humour and practical advise.
 
