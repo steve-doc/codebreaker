@@ -440,11 +440,11 @@ def check_high_score(level, attempts, player):
     if score == "None":
         print(f"Congratulations, you set your first Best Score",
               f" of {attempts} at {level_name} level\n")
-        player[ind] = attempts
+        player[ind] = int(attempts)
     elif attempts < int(score):
         print(f"Congrats, you set a new Best Score of",
               f" {attempts} at {level_name} level\n")
-        player[ind] = attempts
+        player[ind] = int(attempts)
     elif attempts == int(score):
         print(f"Not bad, you equalled your Best Score of",
               f" {attempts} at {level_name} level\n")
