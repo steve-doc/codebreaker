@@ -32,7 +32,7 @@ class Attempt:
         print(f"Attempt:{x:02d}",
               f"  \033[1;34m{self.attempt}\033[0m",
               f"   Hit: \033[0;32m{self.hit}\033[0m",
-              f"  Miss: \033[1;35m{self.miss}\033[0m")
+              f"  Near miss: \033[1;35m{self.miss}\033[0m")
 
 
 def welcome_banner():
@@ -241,12 +241,12 @@ def get_player_guess(code_length):
                     return guess
                 guess = int(guess)
                 if len(str(guess)) != code_length:
-                    print(f"Must be {code_length}"
+                    print(f"\nMust be {code_length} "
                           "digits long and not have leading zeros")
 
             break
         except ValueError:
-            print("must be an Integer")
+            print("\nMust be an Integer")
     return guess
 
 
@@ -502,3 +502,4 @@ welcome_banner()
 input_name = get_player_name()
 player = check_existing_player(input_name)
 game_menu(player)
+
