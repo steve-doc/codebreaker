@@ -151,6 +151,8 @@ Testing layout and appearance of game for consistency throughout browsers.
 ## Fixed Bugs
 1. An error comparing string to int when check high scores only when new user "None" being high score. Discovered I had assigned wrong value to variable in another function. Resolved.
 2. Heroku "Application error" in deployed code.  Was caused due to running out of Gitpod hours.  Have to create new workspace under CI Students Gitpod account and redeploy appplication.  Resloved.
+3. New best scores were getting returned as string rather than integer.  Resolved, converted string variable to int.
+
 ## Bugs Unresolved
 None
 
