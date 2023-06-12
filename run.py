@@ -52,6 +52,9 @@ def welcome_banner():
 def game_menu(player):
     """
     Displays game menu, take user choice and acts on choice
+    Argument:
+        player - an array containing player name and
+        best scores for each level.
     """
 
     choice = None
@@ -80,7 +83,10 @@ def game_menu(player):
 
 def instructions(player):
     """
-    Print out game instructions
+    Print out game instructions.
+    Argument:
+        player - an array containing player name and
+        best scores for each level.
     """
     welcome_banner()
 
@@ -144,7 +150,10 @@ GOOD LUCK WITH CRACKING THE CODE!\n
 
 def high_scores(player):
     """
-    displays three leaderboard for easy, normal & difficult levels
+    displays three leaderboard for easy, normal & difficult levels.
+    Argument:
+        player - an array containing player name and
+        best scores for each level.
 
     """
     players = SHEET.get_all_values()
@@ -208,7 +217,12 @@ def high_scores(player):
 
 def generate_code(code_length):
     """
-    Generate random code of 3, 4 or 5 characters in length
+    Generate random code of 3, 4 or 5 characters in length.
+    Argument:
+        code_length - an integer providing length of code
+        to be generated.
+    Returns:
+        code - an integer that is code for game.
     """
     if code_length == 3:
         start = 100
@@ -227,7 +241,12 @@ def generate_code(code_length):
 
 def get_player_guess(code_length):
     """
-    Ask for user guess and check it is integer and correct length
+    Ask for user guess and check it is integer and correct length.
+    Argument:
+        code_length - an integer providing length of code
+        to be generated.
+    Return:
+        guess = and integer input by player.
     """
     question = f"\nEnter a {code_length} digit" + \
                " number to crack the code (0 to quit): \n"
@@ -253,8 +272,10 @@ def get_player_guess(code_length):
 def make_list(data):
     """
     Convert code or guess into a list for easier comparison.
-    Passed a number, converts to string and then to list.
-    Returns list
+    Argument:
+        data - an integer that is the latest guess from player.
+    Returns:
+        this_list - an array made up of each character from data argument
     """
     this_list = []
     string = str(data)
@@ -264,10 +285,16 @@ def make_list(data):
 
 def check_answer(code, guess):
     """
-    Checks each character of code for exact match then for
-    near misses (right character in wrong place).
+    Checks each character of code angainst the player's guess
+    for exact match then for near misses (right character in wrong place).
     Builds lists of matches and near misses.
-    Returns length of each list.
+    Argument:
+        code - an integer which is the code to be cracked.
+        guess - an integeger which is the players current
+        guess at the code.
+    Returns:
+        exact_match - integer with number of hits
+        near_miss - integer with number of near misses
     """
     code_list = make_list(code)
     guess_list = make_list(guess)
@@ -297,6 +324,11 @@ def build_attempt_list(alist, attempt):
     """
     add each attempt to the attempt_list so it can be printed
     out before the next attempt
+    Argument:
+        alist - an array in acculated list of previous guesses.
+        attempt - integer with most recent guess from player.
+    Returns:
+        alist - updated list of attempts at code.
     """
     alist.append(attempt)
     return alist
@@ -307,6 +339,11 @@ def show_previous_attempts(attempt_list, code_length):
     First clear screen and reprint welcome banner
     Print list of attempts and results to screen
     before next attempt.
+    Argument:
+        attempt_list - list of objects. Objects are previous attempts
+        at code.
+        code_length - an integer providing length of code
+        to be generated.
     """
     welcome_banner()
 
@@ -333,6 +370,8 @@ def show_previous_attempts(attempt_list, code_length):
 def get_player_name():
     """
     Get player name.  Check it is alphanumeric.
+    Returns :
+        user - a string containing the name the player input.
     """
     user = "*"
     while not user.isalnum():
@@ -348,6 +387,11 @@ def check_existing_player(user):
     Check if new or existing user.
     If existing show current Best Scores
     If new, add to spreadsheet with scores set to "None"
+    Argument:
+        user - a string containing the name the player input.
+    Returns:
+        player - an array containing player name and
+        best scores for each level.
     """
     players = SHEET.get_all_values()
     for player in players:
@@ -378,6 +422,8 @@ def ask_game_level():
     """
     Takes input from player on what game level they want to play and
     returns level to be used for creating code length.
+    Returns:
+        level = a single character string with the chosen level.
     """
     print(" What level of game would you like to play?")
     print("\n(B)eginner (3 Digit code)")
@@ -397,6 +443,10 @@ def ask_game_level():
 def set_game_level(level):
     """
     sets code length based on game level
+    Argument:
+        level = a single character string with the chosen level.
+    Returns:
+        code_length = integer with length of code.
     """
     if level == "b":
         code_length = 3
@@ -411,6 +461,10 @@ def set_game_level(level):
 def game_over(input_name, attempt_number):
     """
     Display "Game Over" and tell player what their score was.
+    Arguments:
+        input_name - String with player name
+        attempt_number - integer with the number of attempts it took to
+        complete the game.
     """
     welcome_banner()
     print("GAME OVER!!!\n")
@@ -421,8 +475,15 @@ def game_over(input_name, attempt_number):
 def check_high_score(level, attempts, player):
     """
     Check if score beats existing high score.
+    Arguments:
+        level - string with game level.
+        attempts - integer with number of attempts to complete game.
+        player - an array containing player name and best scores for
+        each level.
+    Returns:
+        player - an updated array containing player name and best scores
+        for each level.
     """
-
     if level == "b":
         ind = 1
         level_name = "Beginner"
@@ -464,7 +525,10 @@ def check_high_score(level, attempts, player):
 
 def update_spreadsheet(player):
     """
-    Update score on spreadsheet
+    Update score on spreadsheet.
+    Argument:
+        player - an array containing player name and best scores for
+        each level.
     """
     cell = SHEET.find(player[0])
     row = str(cell.row)
@@ -475,6 +539,12 @@ def update_spreadsheet(player):
 def main(player):
     """
     Main game function
+    Argument:
+        player - an array containing player name and best scores for
+        each level.
+    Returns:
+        Returns to game_menu function at end passing the updated player
+        array.
     """
     welcome_banner()
 
@@ -502,4 +572,3 @@ welcome_banner()
 input_name = get_player_name()
 player = check_existing_player(input_name)
 game_menu(player)
-
